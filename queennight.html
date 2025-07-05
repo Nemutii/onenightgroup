@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLUB QUEENNIGHT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Quicksand', 'Playfair Display', serif;
+      min-height: 100vh;
+      color: #23243a;
+      background: linear-gradient(120deg, #fffbe6 0%, #f7f7fa 100%);
+    }
+    .topnav {
+      background: linear-gradient(120deg, #fffbe6 0%, #f7f7fa 100%);
+      box-shadow: 0 2px 12px rgba(191,161,74,0.10);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .topnav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .topnav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .topnav-logo img {
+      height: 40px;
+      margin-right: 8px;
+    }
+    .topnav-menu {
+      display: flex;
+      gap: 16px;
+    }
+    .topnav-btn {
+      color: #23243a;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 18px;
+      transition: background 0.3s, color 0.3s;
+      /* active解除: 背景色や色の変化を無効化 */
+    }
+    .topnav-btn:hover {
+      background: rgba(191,161,74,0.1);
+      color: #bfa14a;
+    }
+    /* activeクラスのスタイルを解除 */
+    .topnav-btn.active {
+      background: none !important;
+      color: #23243a !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    header {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8em;
+      margin: 0;
+      color: #23243a;
+      letter-spacing: 0.08em;
+      text-shadow: 0 2px 16px #fffbe6, 0 0 2px #bfa14a;
+    }
+    .gold-line {
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, #bfa14a 0%, #fffbe6 100%);
+      margin: 12px auto 24px auto;
+      border-radius: 2px;
+    }
+    .overview {
+      font-size: 1.1em;
+      max-width: 600px;
+      margin: 10px auto 32px auto;
+      color: #6a5b2b;
+      background: rgba(255,255,255,0.7);
+      padding: 18px 32px;
+      border-radius: 18px;
+      border: 1.5px solid #e6d8b7;
+      box-shadow: 0 2px 12px rgba(191,161,74,0.06);
+      text-align: center;
+    }
+    .tab-content {
+      animation: fadeIn 0.5s ease forwards;
+      padding: 30px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cast-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .cast-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .cast-card:hover {
+      transform: scale(1.05);
+    }
+    .cast-switch-btn {
+      padding: 8px 24px;
+      margin: 0 8px 20px 8px;
+      border-radius: 20px;
+      border: 2px solid #bfa14a;
+      background: #fffbe6;
+      color: #bfa14a;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1em;
+      letter-spacing: 0.04em;
+      box-shadow: 0 2px 8px rgba(191,161,74,0.04);
+    }
+    .cast-switch-btn.active, .cast-switch-btn:hover {
+      background: #bfa14a;
+      color: #23243a;
+      border-color: #bfa14a;
+      box-shadow: 0 4px 24px rgba(191,161,74,0.12);
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      gap: 18px;
+    }
+    .tab-button {
+      margin: 5px;
+      padding: 14px 38px;
+      background: #fffbe6;
+      border: 2px solid #bfa14a;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(.4,2,.6,1);
+      text-decoration: none;
+      color: #bfa14a;
+      font-weight: 600;
+      font-size: 1.1em;
+      letter-spacing: 0.04em;
+      box-shadow: 0 2px 8px rgba(191,161,74,0.04);
+      position: relative;
+    }
+    .tab-button:hover, .tab-button.active {
+      background: #bfa14a;
+      color: #23243a;
+      border-color: #bfa14a;
+      box-shadow: 0 4px 24px rgba(191,161,74,0.12);
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(40,32,10,0.45);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #fffbe6;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(191,161,74,0.18);
+      padding: 48px 40px 40px 40px;
+      min-width: 420px;
+      max-width: 98vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      border: 2px solid #bfa14a;
+      animation: modalZoom 0.3s;
+      text-align: center;
+    }
+    @keyframes modalZoom {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-flex {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      justify-content: center;
+    }
+    .modal-img {
+      width: 240px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 0;
+      box-shadow: 0 2px 12px rgba(191,161,74,0.12);
+      background: #eee;
+      flex-shrink: 0;
+    }
+    .modal-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      min-width: 160px;
+    }
+    .modal-name {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #bfa14a;
+      margin-bottom: 12px;
+    }
+    .modal-links {
+      margin-bottom: 8px;
+      width: 100%;
+    }
+    .modal-links a {
+      color: #bfa14a;
+      text-decoration: underline;
+      margin-right: 10px;
+      font-size: 1em;
+      word-break: break-all;
+    }
+    .modal-castlist {
+      margin-bottom: 8px;
+      font-size: 0.98em;
+      color: #23243a;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e6d8b7;
+      padding: 8px 12px;
+      box-shadow: 0 1px 4px rgba(191,161,74,0.06);
+      width: 100%;
+    }
+    .modal-comment {
+      font-size: 1.1em;
+      color: #23243a;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e6d8b7;
+      padding: 10px 16px;
+      margin-top: 8px;
+      min-width: 180px;
+      box-shadow: 0 1px 4px rgba(191,161,74,0.06);
+      user-select: text;
+      width: 100%;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 2em;
+      color: #bfa14a;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.2s;
+    }
+    .modal-close:hover {
+      color: #a88c2c;
+    }
+    footer {
+      background: linear-gradient(120deg, #fffbe6 0%, #f7f7fa 100%);
+      color: #23243a;
+      padding: 36px 0 18px 0;
+      margin-top: 60px;
+      text-align: center;
+      border-top: 1.5px solid #e6d8b7;
+      box-shadow: 0 -2px 12px rgba(191,161,74,0.08);
+    }
+    @media (max-width: 700px) {
+      h1 { font-size: 1.5em; }
+      .overview { font-size: 1em; padding: 12px 8px; }
+      .tabs { gap: 8px; }
+      .tab-button { padding: 10px 18px; font-size: 1em; }
+    }
+    @media (max-width: 600px) {
+      .modal-flex { flex-direction: column; gap: 10px; }
+      .modal-content { min-width: 0; padding: 18px 4px 12px 4px; }
+      .modal-img { width: 120px; height: 150px; }
+      .modal-info { min-width: 0; align-items: center; }
+      .modal-comment, .modal-castlist { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topnav">
+    <div class="topnav-inner">
+      <a href="index.html" class="topnav-logo">
+        <img src="worldpic/logo.png" alt="ONENIGHT GROUP">
+        <span style="color:#23243a;">ONENIGHT GROUP</span>
+      </a>
+      <nav class="topnav-menu">
+        <a href="index.html" class="topnav-btn" style="color:#23243a;">TOP</a>
+        <a href="bar-onenight.html" class="topnav-btn" style="color:#23243a;">BAR ONENIGHT</a>
+        <a href="onenight.html" class="topnav-btn" style="color:#23243a;">CLUB ONENIGHT</a>
+        <a href="queennight.html" class="topnav-btn" style="color:#23243a;">CLUB QUEENNIGHT</a>
+      </nav>
+    </div>
+  </div>
+  <header>
+    <h1>CLUB QUEENNIGHT</h1>
+    <div class="gold-line"></div>
+    <p class="overview" id="qn-overview" style="white-space:nowrap;overflow-x:hidden;position:relative;">
+      <span class="overview-pc" id="scroll-text" style="display:inline-block;">魅惑的な女性キャストとの1対1の15分間のひととき。唯一無二の空間で繰り広げられる、極上のひとときを堪能してください。</span>
+      <span class="overview-sp" style="display:none;">魅惑的な女性キャストとの1対1の15分間。唯一無二の空間で極上のひとときを。</span>
+    </p>
+  </header>
+  <div class="tab-content active">
+    <h2>CLUB QUEENNIGHT</h2>
+    <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" alt="QUEENNIGHTイメージ" style="width:100%;max-width:600px;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.12);margin:24px auto;display:block;">
+    <div style="text-align:center; margin-top:20px;">
+      <button id="btn-cast" class="cast-switch-btn active">キャスト</button>
+      <button id="btn-staff" class="cast-switch-btn">内勤</button>
+    </div>
+    <div class="cast-grid" id="cast-list"></div>
+  </div>
+  <!-- カレンダー部分ここから（元の仕様に戻す） -->
+  <div class="calendar-area">
+    <iframe src="calendar-queennight.html" style="width:100%;min-height:600px;border:none;" title="営業カレンダー"></iframe>
+  </div>
+  <!-- カレンダー部分ここまで -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close" title="閉じる">&times;</button>
+      <div id="modal-detail"></div>
+    </div>
+  </div>
+  <footer style="background: linear-gradient(120deg, #fffbe6 0%, #f7f7fa 100%); color:#23243a; padding:36px 0 18px 0; margin-top:60px; text-align:center; border-top: 1.5px solid #e6d8b7; box-shadow: 0 -2px 12px rgba(191,161,74,0.08);">
+    <div style="max-width:900px;margin:0 auto;">
+      <img src="worldpic/logo.png" alt="CLUB QUEENNIGHT" style="height:38px;margin-bottom:18px;filter:drop-shadow(0 2px 8px #bfa14a);">
+      <div class="footer-menu" style="margin-bottom:18px;font-size:1.1em;letter-spacing:0.04em;">
+        <a href="index.html" style="color:#23243a;text-decoration:none;margin:0 12px;">TOP</a>
+        <a href="bar-onenight.html" style="color:#23243a;text-decoration:none;margin:0 12px;">BAR ONENIGHT</a>
+        <a href="onenight.html" style="color:#23243a;text-decoration:none;margin:0 12px;">CLUB QUEENNIGHT</a>
+        <a href="queennight.html" style="color:#23243a;text-decoration:none;margin:0 12px;">CLUB QUEENNIGHT</a>
+      </div>
+      <div style="font-size:0.98em;opacity:0.7;color:#23243a;">© 2025 ONENIGHT GROUP</div>
+    </div>
+  </footer>
+  <script>
+    // --- キャスト・内勤データ ---
+    const castList = [
+      {
+        name: 'きらすず',
+        img: 'worldpic/queennight/cast/kirasuzu.webp',
+        comment: '皆様のご来店を心よりお待ちしております！',
+        links: ['https://x.com/kiraSUZU0097', 'https://twitter.com/'],
+        participants: ['CLUB QUEENNIGHT']
+      },
+      {
+        name: '雲井',
+        img: 'worldpic/queennight/cast/kumoi.webp',
+        comment: '楽しい夜を一緒に過ごしましょう！',
+        links: ['https://x.com/kumoixxxvrc'],
+        participants: ['CLUB QUEENNIGHT']
+      },
+      {
+        name: 'みかげ',
+        img: 'worldpic/queennight/cast/mikage.webp',
+        comment: '最高の夜をお届けします！',
+        links: ['https://x.com/M1K4GE_vrc'],
+        participants: ['CLUB QUEENNIGHT', 'ぶいふぁんっ！']
+      },
+      {
+        name: 'もも',
+        img: 'worldpic/queennight/cast/momo.webp',
+        comment: '素敵な時間を一緒に過ごしましょう。',
+        links: ['https://x.com/Momo_VRC_omoM'],
+        participants: ['CLUB QUEENNIGHT']
+      },
+      {
+        name: 'ねこたろ',
+        img: 'worldpic/queennight/cast/nekotaro.webp',
+        comment: 'お話できるのを楽しみにしています！',
+        links: ['https://x.com/nekotaro_vrc'],
+        participants: ['CLUB QUEENNIGHT']
+      },
+      {
+        name: 'らう',
+        img: 'worldpic/queennight/cast/rauu.webp',
+        comment: '癒しの時間をお届けします。',
+        links: ['https://x.com/gauuvrc'],
+        participants: ['CLUB QUEENNIGHT']
+      },
+      {
+        name: 'たまちゃん',
+        img: 'worldpic/queennight/cast/tamachan.webp',
+        comment: '一緒に楽しい思い出を作りましょう！',
+        links: ['https://x.com/midorimo_tamaki'],
+        participants: ['CLUB QUEENNIGHT', 'なりきりごっこの一味']
+      },
+      {
+        name: 'ちむ',
+        img: 'worldpic/queennight/cast/timu.webp',
+        comment: '皆さんとお会いできるのを楽しみにしています。',
+        links: ['https://x.com/cnqii3'],
+        participants: ['CLUB QUEENNIGHT']
+      },
+      {
+        name: '宵',
+        img: 'worldpic/queennight/cast/yoi.webp',
+        comment: '皆さんとお会いできるのを楽しみにしています。',
+        links: ['https://x.com/_41_vrc'],
+        participants: ['CLUB QUEENNIGHT', '懺悔シスターズ']
+      }
+    ];
+    const staffList = [
+      {
+        name: '燐寸くん',
+        role: '統括本部長',
+        img: 'worldpic/onenight/staff/machi.webp',
+        comment: '裏方から全力サポートします！',
+        links: ['https://x.com/How_M_You_M'],
+        participants: ['CLUB ONENIGHT', 'ハムスターグループ']
+      },
+      {
+        name: 'ぷて。。',
+        role: '支配人',
+        img: 'worldpic/onenight/staff/pute.webp',
+        comment: 'みんなを支えます！',
+        links: ['https://x.com/pute_yua1252'],
+        participants: ['CLUB ONENIGHT', 'ハムスターグループ']
+      },
+      {
+        name: 'コースケ',
+        role: 'ディレクター',
+        img: 'worldpic/onenight/staff/kosuke.webp',
+        comment: 'よろしくお願いします！',
+        links: ['https://x.com/kousukeVRChat'],
+        participants: ['CLUB ONENIGHT', 'ハムスターグループ']
+      }
+    ];
+    let currentList = castList;
+    function renderList(type) {
+      const grid = document.getElementById('cast-list');
+      currentList = (type === 'cast' ? castList : staffList);
+      grid.innerHTML = currentList
+        .map((obj,idx) => `<div class='cast-card' tabindex='0' onclick='showModal(${idx})'>
+          <img src='${obj.img}' alt='${obj.name}' style='width:90px;height:110px;object-fit:cover;border-radius:10px;border:1.5px solid #bfa14a;margin-bottom:8px;'>
+          <div style='font-weight:bold;color:#bfa14a;font-size:1.05em;'>${obj.name}</div>
+        </div>`).join('');
+      document.getElementById('btn-cast').classList.toggle('active', type==='cast');
+      document.getElementById('btn-staff').classList.toggle('active', type==='staff');
+    }
+    // モーダル表示用
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalClose = document.getElementById('modal-close');
+    const modalDetail = document.getElementById('modal-detail');
+    function showModal(idx) {
+      const obj = currentList[idx];
+      let linksHtml = '';
+      if(obj.links && obj.links.length) {
+        linksHtml = `<div class='modal-links' style="text-align:left;">` + obj.links.map(link=>
+          `<a href='${link}' target='_blank' title="X(Twitter)" style="display:inline-block;vertical-align:middle;margin-right:10px;">
+            <svg width="22" height="22" viewBox="0 0 1200 1227" style="vertical-align:middle;">
+              <path fill="#bfa14a" d="M1200 214.2c-44.2 19.6-91.7 32.8-141.6 38.8 50.9-30.5 90-78.8 108.4-136.4-47.7 28.3-100.6 48.9-156.9 60-45-48-109.2-78-180.3-78-136.4 0-247 110.6-247 247 0 19.3 2.2 38.1 6.4 56.1C379.7 389.2 201.4 290.2 82.1 142.6c-21.1 36.2-33.2 78.3-33.2 123.2 0 85 43.3 160 109.2 204.1-40.2-1.3-78-12.3-111.1-30.7v3.1c0 118.8 84.6 217.8 197 240.3-20.6 5.6-42.3 8.6-64.7 8.6-15.8 0-31.2-1.5-46.2-4.4 31.3 97.7 122.2 168.8 229.9 170.7-84.2 66-190.4 105.3-305.9 105.3-19.9 0-39.5-1.2-58.8-3.5C108.8 1102.7 238.2 1140 377.6 1140c453.1 0 701.2-375.5 701.2-701.2 0-10.7-0.2-21.3-0.7-31.8 48.1-34.7 89.8-78.1 122.9-127.8z"/>
+            </svg>
+          </a>`
+        ).join('') + `</div>`;
+      }
+      let castListHtml = '';
+      if(obj.participants && obj.participants.length) {
+        castListHtml = `<div class='modal-castlist'>参加キャスト: ${obj.participants.join(', ')}</div>`;
+      }
+      modalDetail.innerHTML = `
+        <div class='modal-flex'>
+          <img class='modal-img' src='${obj.img}' alt='${obj.name}'>
+          <div class='modal-info'>
+            <div class='modal-name'>${obj.name}</div>
+            ${linksHtml}
+            ${castListHtml}
+            <div class='modal-comment'>${obj.comment}</div>
+          </div>
+        </div>
+      `;
+      modalOverlay.classList.add('active');
+    }
+    modalClose.onclick = ()=>modalOverlay.classList.remove('active');
+    modalOverlay.onclick = e=>{ if(e.target===modalOverlay) modalOverlay.classList.remove('active'); };
+    window.showModal = showModal;
+    document.getElementById('btn-cast').onclick = ()=>renderList('cast');
+    document.getElementById('btn-staff').onclick = ()=>renderList('staff');
+    renderList('cast');
+    // --- 概要文を自動で横スクロールさせる（PC表示のみ） ---
+    window.addEventListener('DOMContentLoaded', function() {
+      const el = document.getElementById('scroll-text');
+      if (!el) return;
+      function startScroll() {
+        el.style.transition = 'none';
+        el.style.transform = 'translateX(0)';
+        setTimeout(() => {
+          const parent = document.getElementById('qn-overview');
+          if (!parent) return;
+          const parentW = parent.clientWidth;
+          const textW = el.scrollWidth;
+          if (textW > parentW) {
+            // 右端の見切れ防止のため+20px余白を加える
+            const distance = textW - parentW + 20;
+            // スクロール速度を1.5倍に（15→10に変更）
+            el.style.transition = `transform ${distance/10}s linear`;
+            el.style.transform = `translateX(-${distance}px)`;
+            setTimeout(() => {
+              el.style.transition = 'none';
+              el.style.transform = `translateX(0)`;
+              setTimeout(startScroll, 1000);
+            }, (distance/10)*1000+1000);
+          } else {
+            el.style.transition = 'none';
+            el.style.transform = `translateX(0)`;
+          }
+        }, 1000);
+      }
+      startScroll();
+    });
+  </script>
+</body>
+</html>
