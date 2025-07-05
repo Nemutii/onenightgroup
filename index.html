@@ -297,6 +297,9 @@
     <h1>ONENIGHT GROUP</h1>
     <div class="gold-line"></div>
     <p class="overview">ONENIGHTGROUPは来場いただいたお客様に満足頂ける時間を提供出来るように誠心誠意努めております。</p>
+    <!-- ここから追加 -->
+    <img id="main-visual-index" src="worldpic/world/bar1.webp" alt="ONENIGHT GROUPイメージ" style="width:100%;max-width:600px;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.12);margin:24px auto 32px auto;display:block;">
+    <!-- ここまで追加 -->
     <!-- カレンダー部分ここから（元の仕様に戻す） -->
     <div class="calendar-area">
       <iframe src="calendar.html" style="width:100%;min-height:600px;border:none;" title="営業カレンダー"></iframe>
@@ -419,6 +422,20 @@
     // --- 初期化処理（セレクタ生成＆カレンダー初期表示） ---
     populateSelectors();
     renderCalendar(currentDate);
+window.addEventListener('DOMContentLoaded', function() {
+  const visualImages = [
+    "worldpic/world/bar1.webp",
+    "worldpic/world/con1.webp",
+    "worldpic/world/cqn1.webp"
+  ];
+  let visualIdx = 0;
+  const visualEl = document.getElementById('main-visual-index');
+  if (!visualEl) return;
+  setInterval(() => {
+    visualIdx = (visualIdx + 1) % visualImages.length;
+    visualEl.src = visualImages[visualIdx];
+  }, 4000); // 4秒ごとに切り替え
+});
   </script>
 </body>
 </html>

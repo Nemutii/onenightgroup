@@ -316,43 +316,39 @@
 
   <div class="tab-content active">
     <h2>ONENIGHT BAR</h2>
-    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="BARイメージ" style="width:100%;max-width:600px;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.12);margin:24px auto;display:block;">
+    <img id="main-visual-bar" src="worldpic/world/bar1.webp" alt="BARイメージ" style="width:100%;max-width:600px;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.12);margin:24px auto;display:block;">
     <!-- カレンダーなどの追加コンテンツここに -->
-     <script>
-  // --- 概要文を自動で横スクロールさせる（PC表示のみ） ---
-  window.addEventListener('DOMContentLoaded', function() {
-    const el = document.getElementById('scroll-text-bar');
-    if (!el) return;
-    function startScroll() {
-      el.style.transition = 'none';
-      el.style.transform = 'translateX(0)';
-      setTimeout(() => {
-        const parent = document.getElementById('bar-overview');
-        if (!parent) return;
-        const parentW = parent.clientWidth;
-        const textW = el.scrollWidth;
-        if (textW > parentW) {
-         // 右端の見切れ防止のため+20px余白を加える
-          const distance = textW - parentW + 20;
-         // スクロール速度を1.5倍に（15→10に変更）
-          el.style.transition = `transform ${distance/10}s linear`;
-          el.style.transform = `translateX(-${distance}px)`;
-          setTimeout(() => {
-            el.style.transition = 'none';
-            el.style.transform = 'translateX(0)';
-            setTimeout(startScroll, 1000);
-          }, (distance/10)*1000+1000);
-        } else {
-          el.style.transition = 'none';
-          el.style.transform = 'translateX(0)';
-        }
-      }, 1000);
-    }
-    startScroll();
-  });
-</script>
-<!-- ...既存のbody閉じタグ... -->
   </div>
+  <script>
+    // --- メインビジュアル画像の自動切り替え ---
+    window.addEventListener('DOMContentLoaded', function() {
+      const visualImages = [
+      "images/bar1.webp",
+      "images/bar2.webp",
+      "images/bar3.webp"
+      ];
+      let visualIdx = 0;
+      const visualEl = document.getElementById('main-visual-bar');
+      if (!visualEl) return;
+      setInterval(() => {
+        visualIdx = (visualIdx + 1) % visualImages.length;
+        visualEl.src = visualImages[visualIdx];
+      }, 4000); // 4秒ごとに切り替え
+    });
+
+    // --- 自動スクロール（既存のものがあればそのまま残してください） ---
+    // 例: テキストの自動スクロール
+    window.addEventListener('DOMContentLoaded', function() {
+      const scrollText = document.getElementById('scroll-text-bar');
+      if (!scrollText) return;
+      let pos = 0;
+      setInterval(() => {
+        pos -= 1;
+        scrollText.style.transform = `translateX(${pos}px)`;
+        if (Math.abs(pos) > scrollText.scrollWidth) pos = scrollText.parentElement.offsetWidth;
+      }, 30);
+    });
+  </script>
   <footer style="background: linear-gradient(120deg, #fffbe6 0%, #f7f7fa 100%); color:#23243a; padding:36px 0 18px 0; margin-top:60px; text-align:center; border-top: 1.5px solid #e6d8b7; box-shadow: 0 -2px 12px rgba(191,161,74,0.08);">
   <div style="max-width:900px;margin:0 auto;">
     <img src="worldpic/logo.png" alt="ONENIGHT GROUP" style="height:38px;margin-bottom:18px;filter:drop-shadow(0 2px 8px #bfa14a);">

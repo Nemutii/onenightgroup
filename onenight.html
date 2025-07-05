@@ -326,7 +326,7 @@
   </header>
   <div class="tab-content active">
     <h2>CLUB ONENIGHT</h2>
-    <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="ONENIGHTイメージ" style="width:100%;max-width:600px;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.12);margin:24px auto;display:block;">
+    <img id="main-visual" src="worldpic/world/con1.webp" alt="ONENIGHTイメージ" style="width:100%;max-width:600px;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.12);margin:24px auto;display:block;">
     <div style="text-align:center; margin-top:20px;">
       <button id="btn-cast" class="cast-switch-btn active">キャスト</button>
       <button id="btn-staff" class="cast-switch-btn">内勤</button>
@@ -672,7 +672,23 @@
       }
       startScroll();
     });
-
+// --- メインビジュアル画像の自動切り替え ---
+window.addEventListener('DOMContentLoaded', function() {
+  const visualImages = [
+    "worldpic/world/con1.webp",
+    "worldpic/world/con2.webp",
+    "worldpic/world/con3.webp",
+    "worldpic/world/con4.webp", 
+    "worldpic/world/con5.webp"
+  ];
+  let visualIdx = 0;
+  const visualEl = document.getElementById('main-visual');
+  if (!visualEl) return;
+  setInterval(() => {
+    visualIdx = (visualIdx + 1) % visualImages.length;
+    visualEl.src = visualImages[visualIdx];
+  }, 4000); // 4秒ごとに切り替え
+});
   </script>
 </body>
 </html>
